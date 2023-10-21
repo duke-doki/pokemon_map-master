@@ -57,9 +57,6 @@ def show_all_pokemons(request):
 
 
 def show_pokemon(request, pokemon_id):
-    with open('pokemon_entities/pokemons.json', encoding='utf-8') as database:
-        pokemons = json.load(database)['pokemons']
-
     for pokemon in Pokemon.objects.all():
         if pokemon.id == int(pokemon_id):
             requested_pokemon = pokemon
@@ -73,8 +70,17 @@ def show_pokemon(request, pokemon_id):
         'title_ru': requested_pokemon.title,
         'title_en': requested_pokemon.title_en,
         'title_jp': requested_pokemon.title_jp,
-        'description': requested_pokemon.text
+        'description': requested_pokemon.text,
     }
+
+    if requested_pokemon.previous_evolution:
+        pokemon["previous_evolution"] = {
+            'title_ru': requested_pokemon.previous_evolution.title,
+            "pokemon_id": requested_pokemon.previous_evolution.id,
+            "img_url": request.build_absolute_uri(
+                requested_pokemon.previous_evolution.image.url)
+        }
+
 
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
     for pokemon_entity in PokemonEntity.objects.filter(
