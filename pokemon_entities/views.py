@@ -71,6 +71,7 @@ def show_pokemon(request, pokemon_id):
         'pokemon_id': requested_pokemon.id,
         'img_url': requested_pokemon.image.url,
         'title_ru': requested_pokemon.title,
+        'description': requested_pokemon.text
     }
 
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
