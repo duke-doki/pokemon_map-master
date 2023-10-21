@@ -11,7 +11,8 @@ class Pokemon(models.Model):
     text = models.TextField(blank=True)
     previous_evolution = models.ForeignKey(
         'self', on_delete=models.CASCADE,
-        null=True, blank=True
+        null=True, blank=True,
+        related_name='next_evolution'
     )
 
     def __str__(self):
